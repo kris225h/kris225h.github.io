@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang=da>
+	<head>
+		<meta charset=utf-8>
+		<title>Monster Shooter</title>
+		<link rel="stylesheet" href="styles.css">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/custom/phaser-arcade-physics.js"></script>
+	</head>
+	<body>
+
+    <header>
+		<h1>MONSTER SHOOTER</h1>
+    </header>
+
+	<main>
+		<p class="backknap"><a href="MonsterShooterForside.html" title="spillet">Back</a></p>
+	</main>
+
+	<script type="text/javascript">
+
+// De variable vi skal bruge erkl�res her
+var game;
+var ship;
+var monster;
+var bullets;
+var cursors;
+var fireButton;
+var bulletTime = 0;
+var bullet;
+
+// Selve spillet
+game = new Phaser.Game(800, 600, Phaser.AUTO, 'Monster-Shooter', { preload: preload, create: create, update: update });
+
+// Her loader vi alle resource i memory
+function preload() {
+    game.load.baseURL = 'http://examples.phaser.io/assets/';
+    game.load.crossOrigin = 'anonymous';
+    this.load.image('sky', 'skies/space3.png');
+    game.load.image('ship', 'sprites/thrust_ship2.png');
+	game.load.image('monster', 'sprites/thrust_ship.png');
+    game.load.image('bullet', 'misc/bullet0.png');
+}
+
+// Her skaber vi alle elementerne i spillet
+function create() {
+	// Baggrund
+    game.add.image(0, 0, 'sky');
+
+	// Kugler
+    bullets = game.add.physicsGroup();
+    bullets.createMultiple(32, 'bullet', false);
+    bullets.setAll('checkWorldBounds', true);
+    bullets.setAll('outOfBoundsKill', true);
+
+	// Rumskibet
+    ship = game.add.sprite(400, 550, 'ship');
+    monster = game.add.sprite(400, 10, 'monster');
+    game.physics.arcade.enable(ship);
+    game.physics.arcade.enable(monster);
+    ship.body.collideWorldBounds = true;
+    monster.body.collideWorldBounds = true;
+	monster.body.velocity.x = 100;
+
+	// Statusvariable for piletasterne og space
+    cursors = game.input.keyboard.createCursorKeys();
+    fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+}
+
+// Handler funktion til opdateringer
+function update() {
+    ship.body.velocity.x = 0;
+
+    monster.events.onOutOfBounds.add(monsterOutOfBounds, this);
+
+    if (cursors.left.isDown) {
+        ship.body.velocity.x = -600;
+    }
+    else if (cursors.right.isDown) {
+        ship.body.velocity.x = 600;
+    }
+
+    if (fireButton.isDown) {
+        fireBullet();
+    }
+}
+
+function render() {
+}
+
+// Skift retning p� monster
+function monsterOutOfBounds(monster) {
+    monster.body.velocity.x *= -1;
+	console.log(monster.body.velocity.x);
+}
+
+
+// Handler til at affyre en kugle
+function fireBullet() {
+    if (game.time.time > bulletTime) {
+        bullet = bullets.getFirstExists(false);
+        if (bullet) {
+            bullet.reset(ship.x + 6, ship.y - 12);
+            bullet.body.velocity.y = -600;
+            bulletTime = game.time.time + 100;
+        }
+    }
+}
+
+	</script>
+
+	</body>
+</html>

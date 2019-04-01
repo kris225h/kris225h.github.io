@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'Heavy Data';
+    src: local('Heavy Data'), local('HeavyData'),
+        url('HeavyData.woff2') format('woff2'),
+        url('HeavyData.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body {
+  font-family: heavy data;
+  background-color:black;
+  position: relative;
+
+  min-height: 100vh;
+}
+h1 {
+  color: #00ff2e;
+  text-align: center;
+
+  text-decoration: color:green;
+}
+main {
+  margin: 10%;
+}
+p {
+  text-align: center;
+}
+.knap  {
+
+
+}
+.knap {
+
+
+  color: #aa00ff;
+}
+  .backknap {
+    position: absolute;
+    top: 45px;
+    left: 45px;
+  }
+
+  .backknap a {
+    color: #aa00ff;
+
+  }
+
+  canvas {
+    margin: 0 20%;
+    width: 60%;
+  }
